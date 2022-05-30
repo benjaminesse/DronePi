@@ -180,7 +180,7 @@ def run():
     listen.start()
 
     # Start switched OFF
-    control_file = '/home/pi/PiSpec/controlON'
+    control_file = 'controlON'
     if os.path.isfile(control_file):
         os.remove(control_file)
 
