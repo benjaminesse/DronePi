@@ -115,10 +115,19 @@ app.layout = dbc.Container(
         html.H1("PiSpec Dashboard"),
         html.Div([dbc.Label("Status")], id="status-text"),
         html.Hr(),
-        dbc.Row(
+        html.Div(
             [
-                dbc.Col(controls, md=4),
-                dbc.Col(plots, md=8),
+                dbc.Row(
+                    [
+                        dbc.Col(controls, md=4),
+                        dbc.Col(plots, md=8),
+                    ]
+                ),
+                dcc.Interval(
+                    id='interval-component',
+                    interval=5000, # in milliseconds
+                    n_intervals=0
+                )
             ]
         )
     ],
@@ -141,10 +150,11 @@ app.layout = dbc.Container(
         Input("clim-hi", "value"),
         Input("clim-lo", "value"),
         Input("zoom-slider", "value"),
-        Input("refresh", "n_clicks")
+        Input("refresh", "n_clicks"),
+        Input("interval-component", "n_intervals")
     ]
 )
-def refresh(plot_param, cmap, clim_hi, clim_lo, zoom, n):
+def refresh(plot_param, cmap, clim_hi, clim_lo, zoom, n, n_interval):
     """Refresh app plots."""
     # Get the results folder
     res_folders = os.listdir("Results")
