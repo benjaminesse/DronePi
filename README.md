@@ -37,7 +37,7 @@ To test the server run:
 ```
 cd /home/pi/PiSpec/
 source venv/bin/activate
-gunicorn -w 4 -b 0.0.0.0:4000 app:app --log-file=gunicorn.log
+gunicorn index:server -w 4 -b :4000 --log-file=gunicorn.log
 ```
 
 Then open `[PiSpec IP Address]:4000` in a browser on the same network as the Raspberry Pi, you should see the landing page. If not, check the `gunicorn.log` file.
@@ -53,7 +53,8 @@ crontab -e
 You may have to select a text editor the first time, I would recommend nano. Then add the following line to the bottom:
 
 ```
-@reboot cd /home/pi/PiSpec/ && source venv/bin/activate && gunicorn -w 4 -b 0.0.0.0:4000 app:app -D --log-file=gunicorn.log &
+@reboot cd /home/pi/PiSpec/ && source venv/bin/activate && gunicorn index:server -w 4 -b :4000 --log-file=gunicorn.log &
+@reboot cd /home/pi/PiSpec/ && source venv/bin/activate && python3 run_pispec.py &
 ```
 
 Then reboot the Raspberry Pi using `sudo reboot`. When the Pi reboots the server should be available on the network at `[PiSpec IP Address]:4000`.
