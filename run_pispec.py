@@ -2,7 +2,7 @@
 import os
 import sys
 import utm
-import time
+# import time
 import yaml
 import serial
 import logging
@@ -189,9 +189,9 @@ def run():
     while True:
 
         # Get the status
-        if not os.path.isfile(control_file):
-            time.sleep(1)
-            continue
+        # if not os.path.isfile(control_file):
+        #     time.sleep(1)
+        #     continue
 
         try:
 
