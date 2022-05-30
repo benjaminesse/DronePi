@@ -125,7 +125,7 @@ app.layout = dbc.Container(
                 ),
                 dcc.Interval(
                     id='interval-component',
-                    interval=5000, # in milliseconds
+                    interval=5000,  # in milliseconds
                     n_intervals=0
                 )
             ]
