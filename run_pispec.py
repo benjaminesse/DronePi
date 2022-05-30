@@ -158,7 +158,7 @@ def run():
     # Generate the analyser
     analyser = Analyser(params,
                         fit_window=config['FitWindow'],
-                        frs_path='Ref/sao2010.txt',
+                        frs_path=config['FRSPath'],
                         model_padding=1.0,
                         model_spacing=0.01,
                         flat_flag=False,
@@ -180,7 +180,7 @@ def run():
     listen.start()
 
     # Start switched OFF
-    control_file = '/home/pi/drone/bin/controlON'
+    control_file = '/home/pi/PiSpec/controlON'
     if os.path.isfile(control_file):
         os.remove(control_file)
 
