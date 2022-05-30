@@ -164,8 +164,7 @@ def run():
                         flat_flag=False,
                         stray_flag=True,
                         stray_window=[280, 290],
-                        ils_type='Params',
-                        ils_path=f'Spec/{spectro.serial_number}_ils.txt')
+                        ils_type='Manual')
 
     # Report fitting parameters
     logger.info(params.pretty_print(cols=['name', 'value', 'vary', 'xpath']))
