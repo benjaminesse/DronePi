@@ -99,10 +99,10 @@ def run():
                       'MinIntTime': 50,
                       'MaxIntTime': 300,
                       'IntTimeStep': 10,
-                      'GPSCOMPORT': 0,
+                      'GPSCOMPort': 0,
                       'FitWindow': [310, 320]}
     try:
-        with open('bin/dronespec_settings.yml', 'r') as ymlfile:
+        with open('pispec_settings.yml', 'r') as ymlfile:
             load_config = yaml.load(ymlfile, Loader=yaml.FullLoader)
             config = {**default_config, **load_config}
     except FileNotFoundError:
