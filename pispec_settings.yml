@@ -1,0 +1,48 @@
+TargetIntensity: 50000
+MinIntTime: 50
+MaxIntTime: 300
+IntTimeStep: 10
+GPSCOMPort: 0
+FitWindow:
+  - 310
+  - 320
+FRSPath: Ref/sao2010.txt
+FitParameters:
+  SO2:
+    value: 1.0e16
+    vary: True
+    xpath: Ref/SO2_295K.txt
+  O3:
+    value: 1.0e19
+    vary: True
+    xpath: Ref/O3_Voigt_223K.txt
+  Ring:
+    value: 0.1
+    vary: True
+    xpath: Ref/Ring.txt
+  bg_poly0:
+    value: 0.0
+  bg_poly1:
+    value: 0.0
+  bg_poly2:
+    value: 0.0
+  bg_poly3:
+    value: 1.0
+  shift0:
+    value: 0.0
+    vary: True
+  shift1:
+    value: 0.1
+    vary: True
+  fwem:
+    value: 0.6
+    vary: False
+  k:
+    value: 2.0
+    vary: False
+  a_w:
+    value: 0.0
+    vary: False
+  a_k:
+    value: 0.0
+    vary: False
