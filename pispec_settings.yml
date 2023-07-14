@@ -6,20 +6,20 @@ GPSCOMPort: 0
 FitWindow:
   - 310
   - 320
-FRSPath: Ref/sao2010.txt
+FRSPath: /home/pi/PiSpec/Ref/sao2010.txt
 FitParameters:
   SO2:
     value: 1.0e16
     vary: True
-    xpath: Ref/SO2_295K.txt
+    xpath: /home/pi/PiSpec/Ref/SO2_295K.txt
   O3:
     value: 1.0e19
     vary: True
-    xpath: Ref/O3_Voigt_223K.txt
+    xpath: /home/pi/PiSpec/Ref/O3_Voigt_223K.txt
   Ring:
     value: 0.1
     vary: True
-    xpath: Ref/Ring.txt
+    xpath: /home/pi/PiSpec/Ref/Ring.txt
   bg_poly0:
     value: 0.0
   bg_poly1:
@@ -36,13 +36,13 @@ FitParameters:
     vary: True
   fwem:
     value: 0.6
-    vary: False
+    vary: True
   k:
     value: 2.0
-    vary: False
+    vary: True
   a_w:
     value: 0.0
-    vary: False
+    vary: True
   a_k:
     value: 0.0
-    vary: False
+    vary: True

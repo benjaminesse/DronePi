@@ -127,7 +127,10 @@ class Spectrometer():
         y = np.average(y_arr, axis=0)
 
         # Get the spectrum timestamp
-        timestamp = datetime.now()
+        if gps is not None:
+            timestamp = datetime.combine(gps.datestamp, gps.timestamp)
+        else:
+            timestamp = datetime.now()
 
         # Get the spectrum position, if available
         if gps is not None:

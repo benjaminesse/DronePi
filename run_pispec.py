@@ -102,7 +102,7 @@ def run():
                       'GPSCOMPort': 0,
                       'FitWindow': [310, 320]}
     try:
-        with open('pispec_settings.yml', 'r') as ymlfile:
+        with open('/home/pi/PiSpec/pispec_settings.yml', 'r') as ymlfile:
             load_config = yaml.load(ymlfile, Loader=yaml.FullLoader)
             config = {**default_config, **load_config}
     except FileNotFoundError:
@@ -127,7 +127,7 @@ def run():
     nowtime = datetime.strftime(datetime.now(), '%Y%m%d_%H%M%S')
 
     # Create the results folder
-    fpath = f'Results/{nowtime}'
+    fpath = f'/home/pi/PiSpec/Results/{nowtime}'
     if not os.path.isdir(fpath):
         os.makedirs(fpath)
 
