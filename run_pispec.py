@@ -40,13 +40,16 @@ def analyse_spec(spec_fname, analyser, fpath, q):
            fit.params['SO2'].fit_val, fit.params['SO2'].fit_err,
            fit.params['SO2'].fit_val/conv, fit.params['SO2'].fit_err/conv,
            info['integration_time'], np.max(fit.spec)]
+    
+    # To send results over telemetry use the following
+    # info['timestamp'], info['lat'], info['lon'], info['alt'], fit.params['SO2'].fit_val/conv
 
     head, tail = os.path.split(spec_fname)
     meas_fname = f"{head}/meas/{tail.replace('spectrum', 'meas')}"
 
-    with open(meas_fname, 'w') as w:
-        for r in res:
-            w.write(f'{r},')
+    # with open(meas_fname, 'w') as w:
+    #     for r in res:
+    #         w.write(f'{r},')
     q.put(res)
 
 
@@ -122,6 +125,7 @@ def run():
     # Connect to the GPS
     ports = serial.tools.list_ports.comports()
     gps = GPS(ports[config['GPSCOMPort']].device)
+
 
     # Get the timestamp
     nowtime = datetime.strftime(datetime.now(), '%Y%m%d_%H%M%S')
@@ -234,7 +238,7 @@ def run():
 
             else:
                 # Log that the process was not started
-                logger.warning('Too many processes! Spectrum {i} not analysed')
+                logger.warning(f'Too many processes! Spectrum {i} not analysed')
 
             i += 1
 

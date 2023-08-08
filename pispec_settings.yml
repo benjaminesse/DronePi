@@ -35,14 +35,14 @@ FitParameters:
     value: 0.1
     vary: True
   fwem:
-    value: 0.6
-    vary: True
+    value: 1.25
+    vary: False
   k:
-    value: 2.0
-    vary: True
+    value: 4.1
+    vary: False
   a_w:
-    value: 0.0
-    vary: True
+    value: -0.4
+    vary: False
   a_k:
-    value: 0.0
-    vary: True
+    value: -3.2
+    vary: False

@@ -128,7 +128,11 @@ class Spectrometer():
 
         # Get the spectrum timestamp
         if gps is not None:
-            timestamp = datetime.combine(gps.datestamp, gps.timestamp)
+            if gps.datestamp is None or gps.timestamp is None:
+                timestamp = datetime.now()
+                logger.warning('No GPS, using system time')
+            else:
+                timestamp = datetime.combine(gps.datestamp, gps.timestamp)
         else:
             timestamp = datetime.now()
 
