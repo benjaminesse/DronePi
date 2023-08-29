@@ -1,8 +1,8 @@
-"""Control Script for the PiSpec."""
+from __future__ import division
 import os
 import sys
 import utm
-# import time
+import time
 import yaml
 import serial
 import logging
@@ -10,6 +10,10 @@ import numpy as np
 from datetime import datetime
 import serial.tools.list_ports
 from multiprocessing import Process, Queue
+import threading
+
+from pymavlink import mavutil
+os.environ['MAVLINK20'] = '1'
 
 from ifit.spectrometers import Spectrometer
 from ifit.gps import GPS
@@ -18,7 +22,7 @@ from ifit.parameters import Parameters
 from ifit.spectral_analysis import Analyser
 
 
-def analyse_spec(spec_fname, analyser, fpath, q):
+def analyse_spec(spec_fname, analyser, fpath, q, mav_connection):
     """."""
     # Read in the spectrum
     x, y, info, err = read_spectrum(spec_fname, spec_type='iFit')
@@ -42,6 +46,11 @@ def analyse_spec(spec_fname, analyser, fpath, q):
            info['integration_time'], np.max(fit.spec)]
     
     # To send results over telemetry use the following
+    mav_connection.mav.named_value_float_send(
+        int(time.mktime(info['timestamp'].timetuple())),
+        'So2_SCD'.encode('utf-8'),
+        fit.params['SO2'].fit_val/conv
+    )
     # info['timestamp'], info['lat'], info['lon'], info['alt'], fit.params['SO2'].fit_val/conv
 
     head, tail = os.path.split(spec_fname)
@@ -77,6 +86,20 @@ def listener(q, save_fname):
                 w.flush()
                 print(f'{res[0]}\t{res[1]}\t{res[2]}\t{res[3]}\t{res[10]}\t'
                       + f'{res[11]}')
+                      
+def heartbeat_thread(conn, timeout=2):
+    """Send heartbeats to router"""
+    while True:
+        conn.mav.heatbeat_send(
+            mavutil.mavlink.MAV_TYPE_GCS,
+            mavutil.mavlink.MAV_AUTOPILOT_INVALID,
+            0, 0, 0
+        )
+        conn.mav.ping_send(
+            0, 1, 126, 0
+        )
+        time.sleep(timeout)
+    threads.remove(threading.current_thread())
 
 
 # =============================================================================
@@ -125,7 +148,23 @@ def run():
     # Connect to the GPS
     ports = serial.tools.list_ports.comports()
     gps = GPS(ports[config['GPSCOMPort']].device)
+    
+    # Connect to MAVLINK
+    connection_string = '/dev/serial0'
+    mav_connection = mavutil.mavlink_connection(
+        '/dev/serial0',
+        baud=115200,
+        source_system=200,
+        source_component=201
+    )
 
+    # Start heartbeat thread
+    hb_thread = threading.Thread(
+        target=heartbeat_thread,
+        name='HB_thread',
+        args=(mav_connection, 5, ),
+        daemon=True
+    )
 
     # Get the timestamp
     nowtime = datetime.strftime(datetime.now(), '%Y%m%d_%H%M%S')
@@ -227,8 +266,10 @@ def run():
             if len(processes) < 3:
 
                 # Create new process to handle fitting of the last scan
-                p = Process(target=analyse_spec,
-                            args=[spec_fname, analyser, fpath, q])
+                p = Process(
+                    target=analyse_spec,
+                    args=[spec_fname, analyser, fpath, q, mav_connection]
+                )
 
                 # Add to array of active processes
                 processes.append(p)

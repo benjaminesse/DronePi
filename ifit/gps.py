@@ -28,9 +28,9 @@ class GPS():
         self.filename = filename
         self.timestamp = None
         self.datestamp = None
-        self.lat = np.nan
-        self.lon = np.nan
-        self.alt = np.nan
+        self.lat = 0
+        self.lon = 0
+        self.alt = 0
         self.utm_coords = None
         self.running = True
         self.acquired = False
